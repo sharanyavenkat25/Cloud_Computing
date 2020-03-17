@@ -19,27 +19,28 @@ db.execute("CREATE TABLE IF NOT EXISTS rides (rideId INT,created_by text,passeng
 app=Flask(__name__)
 
 
-def myCounterfunc():
-	global mycounter
-	mycounter = mycounter+ 1
+def inc_count():
+	global no_of_req
+	no_of_req = no_of_req + 1
 
 @app.before_request
 def incrementcounter():
-	if request.path not in ('/', '/api/v1/_count', '/api/v1/db/write/', '/api/v1/db/read/', '/api/v1/db/clear'):
-		myCounterfunc()
+	if request.path not in ('/', '/api/v1/_count', '/api/v1/db/write', '/api/v1/db/read'):
+		inc_count()
 
 
 @app.route('/api/v1/_count', methods=["GET"])
-def count_the_requests():
-	r = list()
-	total = mycounter
-	r.append(total)
-	return jsonify(r), 200
+def count_req():
+	print("entered count requester")
+	li = list()
+	total = no_of_req
+	li.append(total)
+	return jsonify(li), 200
 
 @app.route('/api/v1/_count', methods=["DELETE"])
-def reset_the_requests():
-	global mycounter
-	mycounter =0 
+def reset_req():
+	global no_of_req
+	no_of_req =0 
 	return jsonify({})
 
 
@@ -94,7 +95,7 @@ def create_ride():
 						"vals":"("+"'"+str(rideId[0])+"'"+","+"'"+str(u_name)+"'"+","+"'{}'"+","+"'"+str(source)+"'"+","+"'"+str(dest)+"'"+","+"'"+str(time_obj)+"'"+")",
 						"check":"insert"}
 			headers={'origin':'3.216.152.31'}
-			pass_api="http://rides:80/api/v1/db/write/"
+			pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
 			r=requests.post(url=pass_api,json=pass_data,headers=headers)
 
 
@@ -110,7 +111,7 @@ def create_ride():
 						"cond":"created_by="+"'"+str(u_name)+"'",
 						"vals":"passengers=array_cat(passengers,"+"'{"+u_name+"}'"+")",
 						"check":"update"}
-			pass_api="http://rides:80/api/v1/db/write/"
+			pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
 			r=requests.post(url=pass_api,json=pass_data)
 			return Response("{}",status=201,mimetype='application/json')
 	else:
@@ -160,7 +161,7 @@ def details_upcoming():
 @app.route('/api/v1/rides/<rideId>', methods=["GET"])
 def  ride_details(rideId):
 	pass_data={"table":"rides","columns":"rideid, created_by, source, dest, time_stamp, passengers","where":"rideid="+rideId}
-	pass_api="http://rides:80/api/v1/db/read/"
+	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
 	headers={'origin':'3.216.152.31'}
 	res=requests.post(url=pass_api,json=pass_data,headers=headers)
 	resp=res.text
@@ -193,17 +194,16 @@ def join_existing_ride(rideId):
 	To check if rideid and uname is valid
 	query="select rideid from rides where rideid=rideid"
 	query="select uname from userdata where uname=uname"
-	headers={'origin':'3.216.152.31'}"""
-	headers={'origin':'3.216.152.31'}
+	"""
 	#pass_data={"table":"userdata","columns":"uname","where":"uname="+"'"+str(u_name)+"'"}
 	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/users"
-	r1=requests.get(url=pass_api,headers=headers)
+	r1=requests.get(url=pass_api)
 	resp1=r1.text
 	#resp1=json.loads(resp1)
 	# print("hello")
 
 	pass_data={"table":"rides","columns":"rideid","where":"rideid="+"'"+rideId+"'"}
-	pass_api="http://rides:80/api/v1/db/read/"
+	pass_api="http://localhost:80/api/v1/db/read/"
 	r2=requests.post(url=pass_api,json=pass_data)
 	resp2=r2.text
 	resp2=json.loads(resp2)
@@ -213,10 +213,9 @@ def join_existing_ride(rideId):
 	if(len(resp2)==0):
 		print("hello")
 		abort(400,description="rideID does not exist")
-	headers={'origin':'3.216.152.31'}
 	pass_data={"table":"rides","columns":"passengers","where":"rideid="+"'"+str(rideId)+"'"}
-	pass_api="http://rides:80/api/v1/db/read/"
-	r=requests.post(url=pass_api,json=pass_data,headers=headers)
+	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
+	r=requests.post(url=pass_api,json=pass_data)
 	dup=r.text
 	dup=json.loads(dup)
 	# print(dup)
@@ -228,8 +227,8 @@ def join_existing_ride(rideId):
 					"cond":"rideid="+rideId,
 					"vals":"passengers=array_cat(passengers,"+"'{"+u_name+"}'"+")",
 					"check":"update"}
-		pass_api="http://rides:80/api/v1/db/write/"
-		r=requests.post(url=pass_api,json=pass_data,headers=headers)
+		pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
+		r=requests.post(url=pass_api,json=pass_data)
 		return Response("{}",status=200,mimetype='application/json')
 	else:
 		print("you're already part of the ride")
@@ -242,8 +241,8 @@ def count_rides():
 	res=[]
 	pass_data={"table":"rides","columns":"rideId","where":"1=1"}
 	n=0
-	#headers={'origin':'3.216.152.31'}
-	pass_api="http://rides:80/api/v1/db/read/"
+
+	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
 	headers= {'origin':'3.216.152.31'}
 	
 	r=requests.post(url=pass_api,json=pass_data,headers=headers)
@@ -253,7 +252,7 @@ def count_rides():
 	for row in resp:
 		n+=1
 	res.append(n)
-	return jsonify(res) #,status=200,mimetype='application/json')
+	return jsonify(res) 
 
 #7. Delete a ride 
 
@@ -262,22 +261,22 @@ def del_ride(rideId):
 
 	
 
-	headers={'origin':'3.216.152.31'}
+	
 	pass_data={"table":"rides","columns":"*","where":"rideid="+rideId}
-	pass_api="http://rides:80/api/v1/db/read/"
-	r=requests.post(url=pass_api,json=pass_data,headers=headers)
+	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
+	r=requests.post(url=pass_api,json=pass_data)
 	resp=r.text
 	resp=json.loads(resp)
 
 	if(len(resp)>0):
 
-		headers={'origin':'3.216.152.31'}
+		
 		pass_data={"table":"rides",
 				   "cond":"rideid="+"'"+rideId+"'",
 				   "vals":"",
 				   "check":"delete"}
-		pass_api="http://rides:80/api/v1/db/write/"
-		r=requests.post(url=pass_api,json=pass_data,headers=headers)
+		pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
+		r=requests.post(url=pass_api,json=pass_data)
 		return Response("{}",status=200,mimetype='application/json')
 	else:
 
@@ -342,10 +341,19 @@ def clear_db():
 				   "cond":"",
 				   "vals":"",
 				   "check":"delete"}
-	pass_api1="http://rides:80/api/v1/db/write/"
+	pass_api1="http://localhost:80/api/v1/db/write/"
 	r1=requests.post(url=pass_api1,json=pass_data1)
 	resp1=r1.text
 	resp1=json.loads(resp1)
+	#userdata
+	pass_data={"table":"userdata",
+				   "cond":"",
+				   "vals":"",
+				   "check":"delete"}
+	pass_api="http://3.218.239.57:80/api/v1/db/write/"
+	r=requests.post(url=pass_api,json=pass_data)
+	resp=r.text
+	resp=json.loads(resp)
 	return Response("{}",status=200,mimetype='application/json')
 
 
@@ -354,7 +362,7 @@ def clear_db():
 
 
 if __name__ == '__main__':
-	global mycounter
-	mycounter = 0	
+	global no_of_req
+	no_of_req = 0	
 	app.debug=True
 	app.run(host='0.0.0.0',port=80)
