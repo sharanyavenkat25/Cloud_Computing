@@ -1,6 +1,6 @@
 
 
-from flask import Flask, render_template,jsonify,request,abort,Response
+mmmmmmfrom flask import Flask, render_template,jsonify,request,abort,Response
 from sqlalchemy import create_engine
 import re
 import datetime
@@ -35,7 +35,7 @@ def add_user():
 	u_pwd=request.get_json()["password"]
 	
 	pass_data={"table":"userdata","columns":"uname,pwd,created_ride","where":"uname="+"'"+str(u_name)+"'"}
-	pass_api="http://users:80/api/v1/db/read/"
+	pass_api="http://localhost:80/api/v1/db/read/"
 	r=requests.post(url=pass_api,json=pass_data)
 	resp=r.text
 	resp=json.loads(resp)
@@ -55,17 +55,17 @@ def add_user():
 		pass_data={"table":"userdata (uname,pwd,created_ride)","cond":"",
 					"vals":"("+"'"+str(u_name)+"'"+","+"'"+str(u_pwd)+"'"+","+"'N'"+")",
 					"check":"insert"}
-		pass_api="http://users:80/api/v1/db/write/"
+		pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
 		r=requests.post(url=pass_api,json=pass_data)
 		return Response("{}",status=201,mimetype='application/json')
 
 #2)Remove User
 @app.route('/api/v1/users/<username>',methods=["DELETE"])
 def remove_user(username):
-	print("i am here")	
+	
 	
 	pass_data={"table":"userdata","columns":"*","where":"uname="+"'"+str(username)+"'"}
-	pass_api=" http://users:80/api/v1/db/read/"
+	pass_api=" http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
 	r=requests.post(url=pass_api,json=pass_data)
 	resp=r.text
 	resp=json.loads(resp)
@@ -86,15 +86,15 @@ def remove_user(username):
 						"cond":"uname="+"'"+str(username)+"'",
 						"vals":"",
 						"check":"delete"}
-			pass_api="http://users:80/api/v1/db/write/"
+			pass_api=" http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
 			r=requests.post(url=pass_api,json=pass_data)
 
 
 			pass_data_update={"table":"rides",
 				"cond":"1=1",
-				"vals":"passengers=array_remove(passengers,"+"'"+username+"'"+")",
+			mmmm----------------------------------6	"vals":"passengers=array_remove(passengers,"+"'"+username+"'"+")",
 				"check":"update"}
-			pass_api_update="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/write/"
+			pass_api_update="http://"+ PUBLIC_URL +":8000/api/v1/db/write/"
 			r=requests.post(url=pass_api_update,json=pass_data_update)
 			return Response("{}",status=200 , mimetype='application/json')
 
@@ -102,7 +102,7 @@ def remove_user(username):
 @app.route('/api/v1/users', methods=["GET"])
 def get_users():
 	pass_data={"table":"userdata","columns":"uname","where":""}
-	pass_api="http://users:80/api/v1/db/read/"
+	pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
 	
 	res=requests.post(url=pass_api,json=pass_data)
 	resp=res.text
@@ -172,7 +172,7 @@ def clear_db():
 				   "cond":"",
 				   "vals":"",
 				   "check":"delete"}
-	pass_api1="http://3.216.152.31:80/api/v1/db/write/"
+	pass_api1="http://rides:80/api/v1/db/write/"
 	r1=requests.post(url=pass_api1,json=pass_data1)
 	resp1=r1.text
 	resp1=json.loads(resp1)
