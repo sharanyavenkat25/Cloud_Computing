@@ -23,17 +23,41 @@ print(r.fetchall())
 app=Flask(__name__)
 #print("after app")
 
+
+def myCounterfunc():
+        global mycounter
+        mycounter = mycounter+ 1
+
+@app.before_request
+def incrementcounter():
+        if request.path not in ('/', '/api/v1/_count', '/api/v1/db/write/', '/api/v1/db/read/', '/api/v1/db/clear'):
+                myCounterfunc()
+
+
+@app.route('/api/v1/_count', methods=["GET"])
+def count_the_requests():
+        r = list()
+        total = mycounter
+        r.append(total)
+        return jsonify(r), 200
+
+@app.route('/api/v1/_count', methods=["DELETE"])
+def reset_the_requests():
+        global mycounter
+        mycounter =0 
+        return jsonify({})
+
+
 #1)Add user
 @app.route('/api/v1/users',methods=["PUT"])
 def add_user():
 	print("Reached PUT /users")
 	if not request.json:
 		abort(400,description="Mention userdetails in request")
-	 
-	
+		
 	u_name=request.get_json()["username"]
 	u_pwd=request.get_json()["password"]
-	
+	headers={"origin":'3.218.239.57'}
 	pass_data={"table":"userdata","columns":"uname,pwd,created_ride","where":"uname="+"'"+str(u_name)+"'"}
 	pass_api="http://users:80/api/v1/db/read/"
 	r=requests.post(url=pass_api,json=pass_data)
@@ -62,8 +86,7 @@ def add_user():
 #2)Remove User
 @app.route('/api/v1/users/<username>',methods=["DELETE"])
 def remove_user(username):
-	print("i am here")	
-	
+	print("i am here")
 	pass_data={"table":"userdata","columns":"*","where":"uname="+"'"+str(username)+"'"}
 	pass_api=" http://users:80/api/v1/db/read/"
 	r=requests.post(url=pass_api,json=pass_data)
@@ -76,7 +99,8 @@ def remove_user(username):
 					"columns":"created_by",
 					"where":"created_by="+"'"+str(username)+"'"}
 		pass_api="http://rideshareApp-948913955.us-east-1.elb.amazonaws.com/api/v1/db/read/"
-		r=requests.post(url=pass_api,json=pass_data)
+		headers={"origin":'3.218.239.57'}
+		r=requests.post(url=pass_api,json=pass_data,headers=headers)
 		resp1=r.text
 		resp1=json.loads(resp1)
 		if(len(resp1)>0):
@@ -144,7 +168,6 @@ def read_db():
 
 @app.route('/api/v1/db/write/', methods=["POST"])
 def write_db():
-	
 	table=request.get_json()["table"]
 	cond=request.get_json()["cond"]
 	vals=request.get_json()["vals"]
@@ -168,30 +191,20 @@ def write_db():
 #11. Clearing the database
 @app.route('/api/v1/db/clear', methods=["POST"])
 def clear_db():
-	pass_data1={"table":"rides",
+	pass_data1={"table":"userdata",
 				   "cond":"",
 				   "vals":"",
 				   "check":"delete"}
-	pass_api1="http://3.216.152.31:80/api/v1/db/write/"
+	pass_api1="http://users:80/api/v1/db/write/"
 	r1=requests.post(url=pass_api1,json=pass_data1)
 	resp1=r1.text
 	resp1=json.loads(resp1)
-	#userdata
-	pass_data={"table":"userdata",
-				   "cond":"",
-				   "vals":"",
-				   "check":"delete"}
-	pass_api="http://localhost:80/api/v1/db/write/"
-	r=requests.post(url=pass_api,json=pass_data)
-	resp=r.text
-	resp=json.loads(resp)
 	return Response("{}",status=200,mimetype='application/json')
 
 
-
-
-
-
-if __name__ == '__main__':	
+if __name__ == '__main__':
+	global mycounter
+	mycounter = 0	
 	app.debug=True
 	app.run(host='0.0.0.0',port=80)
+
