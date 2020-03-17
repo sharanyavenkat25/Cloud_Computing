@@ -1,0 +1,5 @@
+flask
+sqlalchemy
+datetime
+requests
+psycopg2
