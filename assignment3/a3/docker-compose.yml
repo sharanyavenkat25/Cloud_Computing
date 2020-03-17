@@ -1,0 +1,31 @@
+version: "3" 
+services:
+  users:
+    container_name: users
+    build: users/
+    image: users:latest
+    command: python3 users.py
+    ports:
+      - "80:80"
+    environment:
+      - TEAM_NAME=CC_0190_0218_0872
+    links:
+      - "user-db:db"
+    depends_on:
+      - user-db
+    restart: always
+
+  user-db:
+    image: postgres
+    container_name: users_database
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "33000:5432"
+    #command: -p 5432
+    expose:
+      - "5432"  
+
+   
