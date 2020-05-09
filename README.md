@@ -46,5 +46,6 @@ the dbaas folder corresponds to the dbaas instance
 - ssh into the instance using its IP
 - cd into the folder (called sqlproj on the instance)
 - execute the bash command ./run.sh
- the bash script builds the orchestrator, zookeeper, rmq and the workers and prunes previous volumes,images and containers.
+
+ The bash script builds the orchestrator, zookeeper, rmq and the workers and prunes previous volumes,images and containers.
 
