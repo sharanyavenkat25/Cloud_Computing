@@ -14,8 +14,11 @@ The final project however uses SQLite as the Database
 --------------------------------
 
 USER INSTANCE IP : 3.230.137.46
+
 RIDES INSTANCE IP : 52.87.95.202
+
 DBAAS INSTANCE IP : 34.236.79.177
+
 LOAD BALANCER DNS : ridesharelb-397737146.us-east-1.elb.amazonaws.com
 
 --------------------------------
