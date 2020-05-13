@@ -1,0 +1,11 @@
+flask
+flask_sqlalchemy
+psycopg2-binary
+datetime
+numpy
+docker
+requests
+ipython
+pika
+kazoo
+apscheduler

@@ -1,0 +1,10 @@
+flask
+flask_sqlalchemy
+psycopg2-binary
+datetime
+db-sqlite3
+numpy
+requests
+ipython
+pika
+kazoo

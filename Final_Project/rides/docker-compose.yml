@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  rides:
+    container_name: rides
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rides:latest
+    command: python3 rides.py
+    ports:
+      - "80:80"
+    environment:
+      - TEAM_NAME=CC_0190_0218_0872
+    restart: always
