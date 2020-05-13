@@ -4,11 +4,11 @@
 --------------------------------
 ### Contributions by,
 
-Sharanya Venkat *PES1201700218*
+Sharanya Venkat           *PES1201700218*
 
-Mithali Shashidhar *PES1201700190*
+Mithali Shashidhar        *PES1201700190*
 
-Aishwarya M A Ramanath *PES1201700872*
+Aishwarya M A Ramanath    *PES1201700872*
 
 --------------------------------
 
