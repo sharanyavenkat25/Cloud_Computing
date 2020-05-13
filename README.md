@@ -1,22 +1,22 @@
 
-## Cloud Computing Course UE17CS352 - Assignments and Final semester project
+## Cloud Computing Course *UE17CS352, PES University* - Assignments and Final semester project
 --------------------------------
 #### Contributions by,
 
-Sharanya Venkat
+Sharanya Venkat *PES1201700218*
 
-Mithali Shashidhar
+Mithali Shashidhar *PES1201700190*
 
-Aishwarya M A Ramanath
+Aishwarya M A Ramanath *PES1201700872*
 
 --------------------------------
 
-The following repository contains source code and other dependent files for 
+The following repository contains source code and other dependent files for
 - ASSIGNMENT 1
 - ASSIGNMENT 2
 - ASSIGNMENT 3
 - FINAL SEMESTER PROJECT
-
+done as a part of the course *Cloud-Computing, UE17CS352* in *Spring 2020, PES University*
 
 ### Connecting to the Instances
 -------------------------------
