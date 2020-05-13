@@ -37,6 +37,11 @@ LOAD BALANCER DNS : ridesharelb-397737146.us-east-1.elb.amazonaws.com
 This project is entirely built using docker containers.
 Requests are made through Postman on the load-balancer for the user and rides APIs and on port 80 when calling instance specific APIs directly on the orchestrator or rides & users instances.
 
+--------------------------------
+### Design
+![MR Flow chart](https://github.com/sharanyavenkat25/Cloud_Computing/blob/master/Dbaas_Design.jpg)
+
+--------------------------------
 ### Steps for running the Final project :
 
 The Final project consists of 3 folders
@@ -46,11 +51,13 @@ The Final project consists of 3 folders
 
 The rides and users folders correspond to the respective rides and user instances and the dbaas folder corresponds to the dbaas instance
 
+--------------------------------
+
 ### Running flask app for rides and users
 - ssh into the instance using its IP
 - cd into the respective folder (called a3_rides and a3_users on the instance)
 - run docker-compose up --build
-
+--------------------------------
 
 ### Running Orchestrator in the dBaaS instance
 - ssh into the instance using its IP
@@ -59,6 +66,7 @@ The rides and users folders correspond to the respective rides and user instance
 
  The bash script builds the orchestrator, zookeeper, rmq and the workers and prunes previous volumes,images and containers.
  
+-------------------------------- 
  ### Tech-Stack
  - Docker
  - Docker SDK
@@ -68,7 +76,7 @@ The rides and users folders correspond to the respective rides and user instance
  - SQLAlchemy
  - Pika
  - Psycopg2
- 
+ --------------------------------
  #### NOTE : 
 The first three assignments use Postgres as the Database.
 
