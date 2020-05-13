@@ -1,17 +1,25 @@
 
-Cloud Computing Course Assignments and projects
+## Cloud Computing Course UE17CS352 - Assignments and Final semester project
+--------------------------------
+#### Contributions by,
 
-The following zip file contains three folders
-- ASSIGNMENT_1
-- ASSIGNMENT_2
-- ASSIGNMENT_3
-- FINAL_PROJECT
+Sharanya Venkat
 
-#### NOTE : 
-The first three assignments are use Postgres as the Database
-The final project however uses SQLite as the Database
+Mithali Shashidhar
+
+Aishwarya M A Ramanath
 
 --------------------------------
+
+The following repository contains source code and other dependent files for 
+- ASSIGNMENT 1
+- ASSIGNMENT 2
+- ASSIGNMENT 3
+- FINAL SEMESTER PROJECT
+
+
+### Connecting to the Instances
+-------------------------------
 
 USER INSTANCE IP : 3.230.137.46
 
@@ -23,18 +31,19 @@ LOAD BALANCER DNS : ridesharelb-397737146.us-east-1.elb.amazonaws.com
 
 --------------------------------
 
+### Implementation
+
 This project is entirely built using docker containers.
-Requests are made through Postman on the load-balancer and on port 80 if directly calling the instances.
+Requests are made through Postman on the load-balancer for the user and rides APIs and on port 80 when calling instance specific APIs directly on the orchestrator or rides & users instances.
 
-### Steps for running the project :
+### Steps for running the Final project :
 
-The project consists of 3 folders
+The Final project consists of 3 folders
 - rides
 - users
 - dBaaS
 
-The rides and users folders correspond to the respective rides and user instances
-the dbaas folder corresponds to the dbaas instance
+The rides and users folders correspond to the respective rides and user instances and the dbaas folder corresponds to the dbaas instance
 
 ### Running flask app for rides and users
 - ssh into the instance using its IP
@@ -48,4 +57,20 @@ the dbaas folder corresponds to the dbaas instance
 - execute the bash command ./run.sh
 
  The bash script builds the orchestrator, zookeeper, rmq and the workers and prunes previous volumes,images and containers.
+ 
+ ### Tech-Stack
+ - Docker
+ - Docker SDK
+ - Kazoo
+ - Zoo keeper
+ - Flask
+ - SQLAlchemy
+ - Pika
+ - Psycopg2
+ 
+ #### NOTE : 
+The first three assignments use Postgres as the Database.
+
+The final project however uses SQLite as the Database
+
 
