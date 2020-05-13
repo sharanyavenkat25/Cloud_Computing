@@ -1,5 +1,5 @@
 
-## Cloud Computing Course *UE17CS352, PES University* - Assignments and Final semester project
+## Cloud Computing Course *UE17CS352 Spring-2020, PES University* - Assignments and Final semester project
 --------------------------------
 #### Contributions by,
 
